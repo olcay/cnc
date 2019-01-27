@@ -1,30 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using OtomatikMuhendis.Cnc.Client;
 using OtomatikMuhendis.Cnc.Web.Models;
 
 namespace OtomatikMuhendis.Cnc.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ICncClient _cncClient;
+
+        public HomeController(ICncClient cncClient)
         {
-            return View();
+            _cncClient = cncClient;
         }
 
-        public IActionResult About()
+        public IActionResult UnlockMotors()
         {
-            ViewData["Message"] = "Your application description page.";
+            _cncClient.UnlockMotors();
 
-            return View();
+            return View("Index");
         }
 
-        public IActionResult Contact()
+        public IActionResult PenUp()
         {
-            ViewData["Message"] = "Your contact page.";
+            _cncClient.PenUp();
+
+            return View("Index");
+        }
+
+        public IActionResult PenDown()
+        {
+            _cncClient.PenDown();
+
+            return View("Index");
+        }
+        
+        public IActionResult Index([FromQuery] int x = 0, [FromQuery] int y = 0)
+        {
+            _cncClient.GoTo(x, y);
 
             return View();
         }

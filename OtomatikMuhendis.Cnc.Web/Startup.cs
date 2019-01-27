@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OtomatikMuhendis.Cnc.Client;
 
 namespace OtomatikMuhendis.Cnc.Web
 {
@@ -31,6 +32,7 @@ namespace OtomatikMuhendis.Cnc.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddHttpClient<ICncClient, CncClient>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
