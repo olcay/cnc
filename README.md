@@ -15,6 +15,8 @@ If you follow the installation steps you will have a CNC server running for AxiD
 * Replace botType in config.ini to *axidraw*
 * `npm start`
 
+![cncScreenshot.png]({{site.baseurl}}/cncScreenshot.png)
+
 ## Running
 
 Now you can run your project. **Attention, if you do not follow those steps you can damage your plotter.**
