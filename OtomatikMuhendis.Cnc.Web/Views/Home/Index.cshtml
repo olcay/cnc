@@ -3,19 +3,24 @@
 }
 
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-6">
+        <div id="divPlayground"><span class="glyphicon" id="spnPencil">&#x270f;</span></div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6">
         <h2>Go to</h2>
         <form asp-action="Index" id="frmPosition" method="get" class="form-horizontal">
             <div class="form-group">
                 <label for="txtX" class="col-sm-2 control-label">X</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="txtX" name="x" placeholder="0" value="@Context.Request.Query["x"]">
+                    <input type="number" class="form-control" id="txtX" name="x" value="0">
                 </div>
             </div>
             <div class="form-group">
                 <label for="txtY" class="col-sm-2 control-label">Y</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="txtY" name="y" placeholder="0" value="@Context.Request.Query["y"]">
+                    <input type="number" class="form-control" id="txtY" name="y" value="0">
                 </div>
             </div>
             <div class="form-group">
@@ -26,21 +31,48 @@
             </div>
         </form>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6">
         <h2>Preset Positions</h2>
         <a class="btn btn-default btnGoTo" data-route-x="0" data-route-y="0" role="button">Zero</a>
         <a class="btn btn-default btnGoTo" data-route-x="600" data-route-y="436" title="(600,436)" role="button">Bottom Right</a>
         <a class="btn btn-default btnGoTo" data-route-x="-600" data-route-y="-436" title="(-600,-436)" role="button">Top Left</a>
     </div>
-    <div class="col-md-3">
-        <h2>Pen</h2>
-        <a class="btn btn-success" id="btnPenUp" role="button">Up</a>
-        <a class="btn btn-danger" id="btnPenDown" role="button">Down</a>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Pen</h2>
+                <a class="btn btn-success" id="btnPenUp" role="button">Up</a>
+                <a class="btn btn-danger" id="btnPenDown" role="button">Down</a>
+            </div>
+            <div class="col-md-6">
+                <h2>Motors</h2>
+                <a class="btn btn-warning" id="btnUnlockMotors" role="button">Unlock</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Running</h2>
+                <ul>
+                    <li>Go to cncserver-2.7.6\package</li>
+                    <li><code>npm start</code></li>
+                    <li>Go to project folder</li>
+                    <li><code>dotnet run</code></li>
+                    <li>Click <b>Unlock</b> button to unlock motors</li>
+                    <li>Position plotter head to the center of the both coordinates</li>
+                    <li>Unplug electricity cable to motors</li>
+                    <li>Click <b>Zero</b> button</li>
+                    <li>Plug back electricity cable to motors</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h2>Log</h2>
+                <p>When the <b>Down</b> is clicked, the position will be logged in here.</p>
+                <textarea id="txtLog" rows="9"></textarea><br/>
+                <a class="btn btn-success" id="btnRunLog" role="button">Run Log</a>
+            </div>
+        </div>
     </div>
-    <div class="col-md-3">
-        <h2>Motors</h2>
-        <a class="btn btn-warning" id="btnUnlockMotors" role="button">Unlock</a>
-    </div>
+    
 
 </div>
 

@@ -10,6 +10,7 @@ body {
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-top: 15px;
 }
 
 /* Carousel */
@@ -34,4 +35,18 @@ body {
     .carousel-caption {
         display: none;
     }
+}
+
+#divPlayground{
+    cursor: pointer;
+    border: 2px solid gray;
+    height: 600px;
+    width: 436px;
+}
+
+#spnPencil{
+    position: absolute;
+    top: 300px;
+    left: 218px;
+    transform: rotate(180deg);
 }
