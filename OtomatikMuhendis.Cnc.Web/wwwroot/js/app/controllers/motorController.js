@@ -1,5 +1,5 @@
 ﻿var MotorController = function (leapService, motorService) {
-    var logStep = 0, runLogInterval;
+    var logStep = 0, runLogInterval = false;
 
     var init = function (container) {
         $("#btnPenUp").click(penUp);
@@ -53,6 +53,7 @@
         $("#btnRunLog").removeClass("btn-danger").addClass("btn-success").html("Run Log").unbind().click(runLog);
 
         clearInterval(runLogInterval);
+        runLogInterval = false;
     };
 
     var enableLeap = function (e) {
@@ -73,7 +74,9 @@
         var x = $('#txtX').val();
         var y = $('#txtY').val();
 
-        $("#txtLog").val($("#txtLog").val() + "[" + x + "," + y + "]\n");
+        if(runLogInterval === false){
+            $("#txtLog").val($("#txtLog").val() + "[" + x + "," + y + "]\n");
+        }
 
         motorService.penDown(done, fail);
     };
@@ -106,9 +109,16 @@
         var x = $('#txtX').val();
         var y = $('#txtY').val();
 
-        $("#spnPencil").css({top: ((Number(x) + 600) / 2) + "px", left: ((Number(y) + 436) / 2) + "px"});
+        $("#spnPencil").animate({top: ((Number(x) + 600) / 2) + "px", left: ((Number(y) + 436) / 2) + "px"}, 4000, pencilReachedToTarget);
 
         motorService.goTo(x, y, done, fail);
+    };
+
+    var pencilReachedToTarget = function() {
+        if(runLogInterval !== false){
+            penDown();
+            penUp();
+        }
     };
 
     var done = function (data) {
