@@ -1,5 +1,5 @@
 ﻿var MotorController = function (leapService, motorService) {
-    var logStep = 0, runLogInterval = false;
+    var logStep = 0, totalStep = 0, runLogInterval = false;
 
     var init = function (container) {
         $("#btnPenUp").click(penUp);
@@ -31,28 +31,25 @@
     var runLog = function() {
         $("#btnRunLog").removeClass("btn-success").addClass("btn-danger").html("Stop").unbind().click(stopRunningLog);
         logStep = 0;
-        runLogInterval = setInterval(function(){ 
-
-            var splitted = $('#txtLog').val().split("\n"); 
-            var position = JSON.parse(splitted[logStep]);
-
-            $('#txtX').val(position[0]);
-            $('#txtY').val(position[1]);
-
-            goTo();
-            logStep++;
-
-            if(splitted.length <= logStep + 1){
-                stopRunningLog();
-            }
-
-         }, 5000);
+        runLogInterval = true;
+        processNextStep();
     };
+
+    var processNextStep = function(){
+        var splitted = $('#txtLog').val().split("\n");
+        totalStep = splitted.length;
+        var position = JSON.parse(splitted[logStep]);
+
+        $('#txtX').val(position[0]);
+        $('#txtY').val(position[1]);
+
+        goTo();
+        
+     };
 
     var stopRunningLog = function() {
         $("#btnRunLog").removeClass("btn-danger").addClass("btn-success").html("Run Log").unbind().click(runLog);
 
-        clearInterval(runLogInterval);
         runLogInterval = false;
     };
 
@@ -124,6 +121,14 @@
         if(runLogInterval !== false){
             penDown();
             penUp();
+
+            logStep++;
+
+            if(totalStep <= logStep){
+                stopRunningLog();
+            } else {
+                setTimeout(processNextStep, 1000);
+            }
         }
     };
 
