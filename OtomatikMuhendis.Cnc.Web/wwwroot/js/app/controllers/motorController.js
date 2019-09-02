@@ -109,7 +109,13 @@
         var x = $('#txtX').val();
         var y = $('#txtY').val();
 
-        $("#spnPencil").animate({top: ((Number(x) + 600) / 2) + "px", left: ((Number(y) + 436) / 2) + "px"}, 4000, pencilReachedToTarget);
+        var pencilPosition = $("#spnPencil").position();
+        var newTop = ((Number(x) + 600) / 2);
+        var newLeft = ((Number(y) + 436) / 2);
+
+        var distance = Number(Math.sqrt(Math.pow(newTop - pencilPosition.top, 2) + Math.pow(newLeft - pencilPosition.left, 2)));
+
+        $("#spnPencil").animate({top: newTop + "px", left: newLeft + "px"}, distance * 13, "linear", pencilReachedToTarget);
 
         motorService.goTo(x, y, done, fail);
     };
