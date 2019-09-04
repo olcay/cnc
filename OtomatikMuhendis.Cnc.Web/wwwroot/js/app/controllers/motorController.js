@@ -120,15 +120,20 @@
     var pencilReachedToTarget = function() {
         if(runLogInterval !== false){
             penDown();
-            penUp();
+            setTimeout(penUpAfter, 500);
+            
+        }
+    };
 
-            logStep++;
+    var penUpAfter = function(){
+        penUp();
 
-            if(totalStep <= logStep){
-                stopRunningLog();
-            } else {
-                setTimeout(processNextStep, 1000);
-            }
+        logStep++;
+
+        if(totalStep <= logStep){
+            stopRunningLog();
+        } else {
+            setTimeout(processNextStep, 1000);
         }
     };
 
