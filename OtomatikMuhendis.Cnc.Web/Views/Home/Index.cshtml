@@ -3,40 +3,40 @@
 }
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div id="divPlayground"><span class="glyphicon" id="spnPencil">&#x270f;</span></div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="row">
             <div class="col-md-6">
-        <h2>Go to</h2>
-        <form asp-action="Index" id="frmPosition" method="get" class="form-horizontal">
-            <div class="form-group">
-                <label for="txtX" class="col-sm-2 control-label">X</label>
-                <div class="col-sm-10">
-                    <input type="number" class="form-control" id="txtX" name="x" value="0">
-                </div>
+                <h2>Go to</h2>
+                <form asp-action="Index" id="frmPosition" method="get" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="txtX" class="col-sm-2 control-label">X</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="txtX" name="x" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtY" class="col-sm-2 control-label">Y</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="txtY" name="y" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" class="btn btn-primary" id="btnGoTo">Submit</button>
+                            @*<a class="btn btn-warning" role="button" id="btnToggleLeap">Enable Leap</a>*@
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="txtY" class="col-sm-2 control-label">Y</label>
-                <div class="col-sm-10">
-                    <input type="number" class="form-control" id="txtY" name="y" value="0">
-                </div>
+            <div class="col-md-6">
+                <h2>Preset Positions</h2>
+                <a class="btn btn-default btnGoTo" data-route-x="0" data-route-y="0" role="button">Zero</a>
+                <a class="btn btn-default btnGoTo" data-route-x="600" data-route-y="436" title="(600,436)" role="button">Bottom Right</a>
+                <a class="btn btn-default btnGoTo" data-route-x="-600" data-route-y="-436" title="(-600,-436)" role="button">Top Left</a>
             </div>
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="button" class="btn btn-primary" id="btnGoTo">Submit</button>
-                    <a class="btn btn-warning" role="button" id="btnToggleLeap">Enable Leap</a>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="col-md-6">
-        <h2>Preset Positions</h2>
-        <a class="btn btn-default btnGoTo" data-route-x="0" data-route-y="0" role="button">Zero</a>
-        <a class="btn btn-default btnGoTo" data-route-x="600" data-route-y="436" title="(600,436)" role="button">Bottom Right</a>
-        <a class="btn btn-default btnGoTo" data-route-x="-600" data-route-y="-436" title="(-600,-436)" role="button">Top Left</a>
-    </div>
         </div>
         <div class="row">
             <div class="col-md-6">
@@ -67,14 +67,43 @@
             <div class="col-md-6">
                 <h2>Log</h2>
                 <p>When the <b>Down</b> is clicked, the position will be logged in here.</p>
-                <textarea id="txtLog" rows="9"></textarea><br/>
+                <textarea id="txtLog" rows="9"></textarea><br />
                 <a class="btn btn-success" id="btnRunLog" role="button">Run Log</a>
             </div>
         </div>
     </div>
-    
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-12 form-horizontal">
+                <h2>Prediction</h2>
+                <div class="form-group">
+                    <label for="txtTag" class="col-sm-3 control-label">Tag Name</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="txtTag" name="txtTag" value="customer">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-6">
+                        <a role="button" class="btn btn-primary" id="btnTestPrediction">Test Prediction</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <video width="400" height="300" id="video" controls autoplay></video>
+
+            </div>
+
+        </div>
+    </div>
 
 </div>
+
+<canvas id="canvas" width="400" height="300" style="display:none;"></canvas>
+
 
 @section Scripts{
     <script>

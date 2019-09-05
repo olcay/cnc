@@ -2,6 +2,7 @@
     var logStep = 0, totalStep = 0, runLogInterval = false;
 
     var init = function (container) {
+        
         $("#btnPenUp").click(penUp);
         $("#btnPenDown").click(penDown);
         $("#btnUnlockMotors").click(unlockMotors);
@@ -14,7 +15,11 @@
 
         $("#divPlayground").click(getPositionFromPlayground);
 
-        leapService.init(gotPosition);
+        $("#btnTestPrediction").click(sendToServer);
+
+        //leapService.init(gotPosition);
+
+        initCam();
     };
 
     var getPositionFromPlayground = function(e) {
@@ -37,7 +42,7 @@
 
     var processNextStep = function(){
         var splitted = $('#txtLog').val().split("\n");
-        totalStep = splitted.length;
+        totalStep = splitted.length - 1;
         var position = JSON.parse(splitted[logStep]);
 
         $('#txtX').val(position[0]);
@@ -47,10 +52,12 @@
         
      };
 
-    var stopRunningLog = function() {
+    var stopRunningLog = function () {
+
         $("#btnRunLog").removeClass("btn-danger").addClass("btn-success").html("Run Log").unbind().click(runLog);
 
         runLogInterval = false;
+        sendToServer();
     };
 
     var enableLeap = function (e) {
@@ -129,7 +136,7 @@
         penUp();
 
         logStep++;
-
+        console.log('total:' + totalStep + ' step:' + logStep);
         if(totalStep <= logStep){
             stopRunningLog();
         } else {
@@ -144,6 +151,99 @@
     var fail = function (data) {
         console.log(data.responseText);
     };
+
+    //--------------------
+    // GET USER MEDIA CODE
+    //--------------------
+    navigator.getUserMedia = (navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia);
+
+    var video;
+    var webcamStream;
+
+    function startWebcam() {
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia(
+
+                // constraints
+                {
+                    video: true,
+                    audio: false
+                },
+
+                // successCallback
+                function (localMediaStream) {
+                    video = document.querySelector('video');
+
+                    if (window.webkitURL) {
+                        video.srcObject = localMediaStream;
+                    } else {
+                        video.src = stream;
+                    }
+
+                    webcamStream = localMediaStream;
+                },
+
+                // errorCallback
+                function (err) {
+                    console.log("The following error occured: " + err);
+                }
+            );
+        } else {
+            console.log("getUserMedia not supported");
+        }
+
+    }
+
+    var canvas, ctx;
+
+    function initCam() {
+        // Get the canvas and obtain a context for
+        // drawing in it
+        canvas = document.getElementById("canvas");
+        ctx = canvas.getContext('2d');
+
+        startWebcam();
+    }
+
+    function snapshot() {
+        // Draws current image from the video element into the canvas
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    }
+
+    //document.addEventListener("DOMContentLoaded", init);
+
+    function sendToServer() {
+        
+        snapshot();
+
+        var image = document.getElementById("canvas").toDataURL("image/png");
+        image = image.replace('data:image/png;base64,', '');
+        $.ajax({
+            type: 'POST',
+            url: '/Home/PredictImageContentsAsync',
+            data: '{ "imageData" : "' + image + '" }',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                if (data) {
+                    if (data.tagName === $("#txtTag").val()) {
+                        if (data.probability > 0.9) {
+                            alert("it works sire!");
+                        } else {
+                            alert("it looks like working but I am wrong " + Number((1 - data.probability) * 100) + "%");
+                        }
+                    } else {
+                        alert("it is not ended like you wanted! I am stuck at " + data.tagName);
+                    }
+
+                    console.log(JSON.stringify(data));
+                }
+            }
+        });
+    }
 
     return {
         init: init
